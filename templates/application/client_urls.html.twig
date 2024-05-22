@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client URLs{% endblock %}
+
+{% block body %}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        dialog img {
+            height: 50vh;
+        }
+    </style>
+    <h2>Shortcodes</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Domain</th>
+            <th>Shortcode</th>
+            <th>URL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for shortcode in shortcodes %}
+            <tr>
+                <td>
+                    <button onclick="window.alert('Coming soon...'); return false;">Edit</button>
+                    <button onclick="window.alert('Coming soon...'); return false;">Delete</button>
+                    <button
+                            data-shortcode-url="{{ path('app_admin_shortcode_render', {shortcode: shortcode.id}) }}"
+                    >View QR Code
+                    </button>
+                </td>
+                <td>{{ shortcode.domain.fullyQualifiedDomainName }}</td>
+                <td>{{ shortcode.shortcode }}</td>
+                <td>{{ shortcode.url }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        document
+            .querySelectorAll('button[data-shortcode-url]')
+            .forEach(
+                button => {
+                    button
+                        .addEventListener(
+                            'click',
+                            () => {
+                                const shortcodeUrl = button.getAttribute('data-shortcode-url');
+
+                                const modal = document.createElement('dialog');
+                                modal.innerHTML = `
+                                <img src="${shortcodeUrl}" alt="QR Code for shortcode" />
+                                <button>Close</button>
+                            `;
+                                document.body.appendChild(modal);
+                                modal.querySelector('button').addEventListener('click', () => modal.close());
+                                modal.showModal();
+                            }
+                        );
+                }
+            )
+        ;
+    </script>
+
+{% endblock %}

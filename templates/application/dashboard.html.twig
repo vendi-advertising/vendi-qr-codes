@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dasbhoard{% endblock %}
+
+{% block body %}
+
+    <h2>Clients</h2>
+    <ul>
+        {% for client in clients %}
+            <li>
+                <a href="{{ path('app_admin_urls_list', { 'client': client.id }) }}">
+                    {{ client.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
